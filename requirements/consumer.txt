@@ -1,0 +1,5 @@
+# requirements/consumer.txt
+kafka-python==2.0.2
+pymongo==4.6.1
+vaderSentiment==3.3.2
+python-dotenv==1.0.0

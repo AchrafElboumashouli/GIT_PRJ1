@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Environment variables
+.env
+.env.local
+
+# Model artifacts (large files — use Git LFS or store separately)
+model/*.pkl
+model/*.joblib
+model/spark_pipeline/
+
+# Data (large files)
+data/Reviews.csv
+data/*.csv
+
+# Logs
+logs/
+*.log
+
+# Docker
+.dockerignore
+
+# Spark checkpoints
+/tmp/spark_checkpoint/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

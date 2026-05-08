@@ -1,0 +1,39 @@
+# docker/Dockerfile.dashboard
+# ============================================================
+# Streamlit Dashboard — Python 3.11
+# ============================================================
+
+FROM python:3.11-slim
+
+LABEL maintainer="IASD Big Data 2025-2026"
+LABEL description="Streamlit Dashboard — Amazon Review Sentiment"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Python dependencies
+COPY requirements/dashboard.txt /tmp/dashboard.txt
+RUN pip install --no-cache-dir -r /tmp/dashboard.txt
+
+# Copy source code
+COPY dashboard/ /app/dashboard/
+COPY .env       /app/.env
+
+# Streamlit config
+RUN mkdir -p /root/.streamlit
+COPY docker/streamlit_config.toml /root/.streamlit/config.toml
+# Fallback if running from project root
+
+
+EXPOSE 8501
+
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+    CMD curl -f http://localhost:8501/_stcore/health || exit 1
+
+CMD ["streamlit", "run", "dashboard/app.py", \
+     "--server.port=8501", \
+     "--server.address=0.0.0.0", \
+     "--server.headless=true"]

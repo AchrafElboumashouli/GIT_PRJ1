@@ -1,0 +1,26 @@
+# docker/Dockerfile.producer
+# ============================================================
+# Kafka Producer — Python 3.11-slim
+# ============================================================
+
+FROM python:3.11-slim
+
+LABEL maintainer="IASD Big Data 2025-2026"
+LABEL description="Amazon Review Kafka Producer"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements/producer.txt /tmp/producer.txt
+RUN pip install --no-cache-dir -r /tmp/producer.txt
+
+COPY producer/ /app/producer/
+COPY config/   /app/config/
+COPY .env      /app/.env
+
+RUN mkdir -p /app/logs
+
+CMD ["python", "producer/kafka_producer.py"]

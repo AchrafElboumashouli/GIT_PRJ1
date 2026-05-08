@@ -1,0 +1,40 @@
+# docker/Dockerfile.spark
+# ============================================================
+# Spark Structured Streaming — PySpark 3.5
+# ============================================================
+
+FROM python:3.11-slim
+
+LABEL maintainer="IASD Big Data 2025-2026"
+LABEL description="Spark Streaming — Amazon Review Sentiment"
+
+# Java is required for Spark
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    default-jdk-headless \
+    curl \
+    wget \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV JAVA_HOME=/usr/lib/jvm/default-java
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+WORKDIR /app
+
+# Python dependencies
+COPY requirements/spark.txt /tmp/spark.txt
+RUN pip install --no-cache-dir -r /tmp/spark.txt
+
+# NLTK data
+RUN python -c "import nltk; nltk.download('stopwords'); nltk.download('punkt'); nltk.download('wordnet'); nltk.download('punkt_tab')"
+
+# Copy source code
+COPY streaming/   /app/streaming/
+COPY database/    /app/database/
+COPY config/      /app/config/
+COPY .env         /app/.env
+
+# Create directories
+RUN mkdir -p /app/logs /tmp/spark_checkpoint
+
+CMD ["python", "streaming/spark_streaming.py"]

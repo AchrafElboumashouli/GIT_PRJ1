@@ -1,0 +1,30 @@
+# docker/Dockerfile.consumer
+# ============================================================
+# Python Kafka Consumer + VADER Sentiment — Python 3.11-slim
+# No Java, no Spark, no .pkl files required
+# ============================================================
+
+FROM python:3.11-slim
+
+LABEL maintainer="IASD Big Data 2025-2026"
+LABEL description="Kafka Consumer — Sentiment Analysis via VADER"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Python dependencies
+COPY requirements/consumer.txt /tmp/consumer.txt
+RUN pip install --no-cache-dir -r /tmp/consumer.txt
+
+# Copy source code
+COPY consumer/ /app/consumer/
+COPY config/   /app/config/
+COPY .env      /app/.env
+
+# Create logs directory
+RUN mkdir -p /app/logs
+
+CMD ["python", "consumer/kafka_consumer.py"]

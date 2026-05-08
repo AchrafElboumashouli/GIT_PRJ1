@@ -1,0 +1,27 @@
+{
+  "model_name": "Logistic Regression (Tuned)",
+  "test_accuracy": 0.8842000965422626,
+  "test_f1": 0.8693838744079221,
+  "test_precision": 0.8658944556385586,
+  "test_recall": 0.8842000965422626,
+  "classes": [
+    "negative",
+    "neutral",
+    "positive"
+  ],
+  "label_map": {
+    "0": "negative",
+    "1": "neutral",
+    "2": "positive"
+  },
+  "tfidf_params": {
+    "max_features": 50000,
+    "ngram_range": [
+      1,
+      2
+    ],
+    "min_df": 2,
+    "max_df": 0.95,
+    "sublinear_tf": true
+  }
+}
